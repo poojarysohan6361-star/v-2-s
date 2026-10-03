@@ -20,7 +20,7 @@ export function LeaderboardPage({ currentPlayerName }) {
             <div>
               <h1 className="leaderboard-page__title">Leaderboard</h1>
               <p className="leaderboard-page__subtitle">
-                Rankings update live as adventurers cross the board
+                Standings for completed and concluded expedition runs
               </p>
             </div>
           </div>
@@ -104,14 +104,18 @@ export function LeaderboardPage({ currentPlayerName }) {
                         </span>
                       </td>
                       <td className="col-tile">
-                        <span className="tile-pill">Tile {entry.currentTile ?? entry.tile ?? 1}</span>
+                        <span className="tile-pill">Tile {entry.tileReached ?? entry.currentTile ?? 1}</span>
                       </td>
                       <td className="col-score">
                         <span className="score-val">{entry.score} pts</span>
                       </td>
                       <td className="col-status">
-                        <span className={`status-pill status-pill--${entry.status || 'active'}`}>
-                          {entry.status === 'finished' ? 'Finished' : 'In Progress'}
+                        <span className={`status-pill status-pill--${entry.status || 'completed'}`}>
+                          {entry.status === 'completed'
+                            ? 'Completed'
+                            : entry.status === 'force_ended'
+                            ? 'Force Ended'
+                            : entry.status}
                         </span>
                       </td>
                     </tr>

@@ -34,7 +34,7 @@ function AppContent() {
       </a>
 
       {/* Persistent Navigation */}
-      <TopNav playerName={playerName} onClearPlayer={clearPlayer} />
+      <TopNav playerName={playerName} onSwitchPlayer={clearPlayer} onClearPlayer={clearPlayer} />
 
       {/* Page Content */}
       <div className="app__content">

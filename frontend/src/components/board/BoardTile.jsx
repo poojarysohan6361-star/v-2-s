@@ -27,8 +27,8 @@ export function BoardTile({ number, type, isRevealed, isCurrent }) {
   const meta = type ? TILE_TYPE_META[type] : null;
   const IconComponent = type ? (ICON_MAP[type] || Eye) : null;
 
-  const ariaLabel = isRevealed && meta
-    ? `Tile ${number}, revealed: ${meta.label}`
+  const ariaLabel = isRevealed
+    ? (meta ? `Tile ${number}, revealed: ${meta.label}` : `Tile ${number}, visited`)
     : `Tile ${number}, unrevealed`;
 
   return (

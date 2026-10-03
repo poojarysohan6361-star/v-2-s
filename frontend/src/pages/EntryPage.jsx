@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { usePlayerState } from '../hooks/usePlayerState.js';
 import { useLeaderboard } from '../hooks/useLeaderboard.js';
+import { fetchPlayerState } from '../api/endpoints.js';
 import { Compass, ArrowRight } from 'lucide-react';
 import './EntryPage.css';
 
@@ -29,8 +30,6 @@ export function EntryPage({ onSetPlayer }) {
     setError('');
 
     try {
-      // Import fetchPlayerState directly to avoid hook usage in handler
-      const { fetchPlayerState } = await import('../api/endpoints.js');
       let state = null;
       try {
         state = await fetchPlayerState(trimmed);

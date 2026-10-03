@@ -5,7 +5,7 @@
  * Key: qb.tiles.<playerName>
  * Format: { [tileNumber]: { type, ...extra } }
  */
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 
 const PREFIX = 'qb.tiles.';
 
@@ -65,5 +65,10 @@ export function useTileLog(playerName) {
     }
   }, [playerName]);
 
-  return { readCache, writeTile, getTile, clearCache };
+  return useMemo(() => ({
+    readCache,
+    writeTile,
+    getTile,
+    clearCache
+  }), [readCache, writeTile, getTile, clearCache]);
 }

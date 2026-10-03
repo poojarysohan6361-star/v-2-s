@@ -4,9 +4,10 @@ import { Compass, Trophy, Shield } from 'lucide-react';
 import './TopNav.css';
 
 /**
- * @param {{ playerName: string|null, onSwitchPlayer: () => void }} props
+ * @param {{ playerName: string|null, onSwitchPlayer?: () => void, onClearPlayer?: () => void }} props
  */
-export function TopNav({ playerName, onSwitchPlayer }) {
+export function TopNav({ playerName, onSwitchPlayer, onClearPlayer }) {
+  const handleSwitch = onSwitchPlayer || onClearPlayer;
   return (
     <header className="topnav" role="banner">
       <div className="topnav__inner">
@@ -37,7 +38,7 @@ export function TopNav({ playerName, onSwitchPlayer }) {
           {playerName && (
             <button
               className="topnav__switch"
-              onClick={onSwitchPlayer}
+              onClick={handleSwitch}
               aria-label="Switch player"
             >
               {playerName}

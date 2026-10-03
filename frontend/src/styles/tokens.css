@@ -12,15 +12,27 @@
 
   /* ── Text ── */
   --parchment-100: #F2E9D8;
+  --parchment-200: #DDD2BC;
   --parchment-300: #CBBFA5;
 
   /* ── Accent ── */
+  --brass-300: #E6BC65;
   --brass-400: #D9A441;
+  --brass-500: #C28E2E;
   --brass-600: #A8741A;
+  --brass-700: #8C5E10;
 
   /* ── Semantic ── */
+  --moss-200: #A8D1B0;
+  --moss-300: #8BC095;
   --moss-400: #6FAE7B;
+  --moss-500: #559461;
+
+  --ember-300: #E58265;
+  --ember-400: #DF7150;
   --ember-500: #D8613C;
+  --ember-600: #BC4E2B;
+
   --teal-400: #4FB3BF;
   --violet-400: #9B7FD1;
 
@@ -33,6 +45,7 @@
   --text-xs: 0.75rem;   /* 12px */
   --text-sm: 0.875rem;  /* 14px */
   --text-base: 1rem;    /* 16px */
+  --text-md: 1.125rem;  /* 18px */
   --text-lg: 1.25rem;   /* 20px */
   --text-xl: 1.75rem;   /* 28px */
   --text-2xl: 2.5rem;   /* 40px */
@@ -46,6 +59,7 @@
   --space-2: 8px;
   --space-3: 12px;
   --space-4: 16px;
+  --space-5: 20px;
   --space-6: 24px;
   --space-8: 32px;
   --space-12: 48px;

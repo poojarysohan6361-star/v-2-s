@@ -46,33 +46,23 @@ export function PlayPage({ playerName }) {
   // Sync state from server query
   const serverState = playerQuery.data;
 
-  // Cache revealed tiles from server or move response
-  const revealedTiles = useMemo(() => {
-    const cached = tileLog.readCache();
-    if (serverState?.revealedTiles) {
-      serverState.revealedTiles.forEach((t) => {
-        if (!cached[t]) {
-          tileLog.writeTile(t, { type: 'revealed' });
-          cached[t] = { type: 'revealed' };
-        }
-      });
-    }
-    return cached;
-  }, [serverState, tileLog]);
+  // Local tile cache from localStorage
+  const [tileCache, setTileCache] = useState(() => tileLog.readCache());
 
-  // Update display tile when not actively in a roll/move sequence
+  useEffect(() => {
+    setTileCache(tileLog.readCache());
+  }, [playerName, tileLog.readCache]);
+
+  // Update display tile and restore pending questions when idle
   useEffect(() => {
     if (serverState && turn.phase === 'idle') {
-      if (serverState.runOver) {
-        turn.setRunOver();
-      } else if (serverState.status === 'finished') {
-        turn.setWin();
-      } else if (serverState.promptAnswer && turn.phase !== 'question') {
+      if (serverState.pendingDifficulty && turn.phase !== 'question') {
         turn.restoreQuestion();
+      } else if (serverState.currentTile != null) {
+        setDisplayTile(serverState.currentTile);
       }
-      setDisplayTile(serverState.currentTile ?? 1);
     }
-  }, [serverState, turn]);
+  }, [serverState?.currentTile, serverState?.pendingDifficulty, turn.phase, turn.restoreQuestion]);
 
   // Handle Roll Dice action
   const handleRoll = async () => {
@@ -83,29 +73,52 @@ export function PlayPage({ playerName }) {
 
     try {
       const res = await moveMutation.mutateAsync();
-      setDiceRollValue(res.diceRoll);
-      turn.addLog(`Rolled a ${res.diceRoll}! Moved to tile ${res.newTile}`, 'move');
+      setDiceRollValue(res.roll);
+      turn.addLog(`Rolled a ${res.roll}! Moved to tile ${res.newPosition}`, 'move');
       turn.onMoveResult(res);
+
+      // Persist discovered landing tile type
+      if (res.effect?.tileNumber && res.effect?.type) {
+        tileLog.writeTile(res.effect.tileNumber, { type: res.effect.type });
+        setTileCache(tileLog.readCache());
+      }
 
       // Animate player token movement step-by-step
       const start = displayTile;
-      const target = res.newTile;
+      const target = res.newPosition;
       const step = start < target ? 1 : -1;
       let curr = start;
+
+      const finishMove = () => {
+        setDisplayTile(target);
+        if (res.promptAnswer || res.effect?.type === 'question' || res.effect?.type === 'final_checkpoint') {
+          turn.onEffectDone(res);
+        } else {
+          turn.onMoveDone();
+          if (res.effect?.scoreDelta) {
+            setScoreDelta(res.effect.scoreDelta);
+          }
+        }
+      };
+
+      if (start === target) {
+        finishMove();
+        return;
+      }
 
       const interval = setInterval(() => {
         curr += step;
         setDisplayTile(curr);
         if ((step > 0 && curr >= target) || (step < 0 && curr <= target)) {
           clearInterval(interval);
-          setDisplayTile(target);
-          turn.onMoveDone();
-          if (res.effect?.scoreDelta) {
-            setScoreDelta(res.effect.scoreDelta);
-          }
+          finishMove();
         }
       }, 150);
     } catch (err) {
+      if (err.status === 400 && err.message?.toLowerCase().includes('not in progress')) {
+        turn.setRunOver();
+        return;
+      }
       turn.addLog(`Move failed: ${err.message}`, 'error');
       turn.forceIdle();
     }
@@ -119,12 +132,27 @@ export function PlayPage({ playerName }) {
     try {
       const res = await answerMutation.mutateAsync(choice);
       turn.onAnswerResult(res);
-      if (res.scoreDelta) setScoreDelta(res.scoreDelta);
-      if (res.newTile) setDisplayTile(res.newTile);
+      if (res.scoreDelta != null) setScoreDelta(res.scoreDelta);
+      if (res.currentTile != null) setDisplayTile(res.currentTile);
 
-      const statusText = res.correct ? 'Correct answer!' : 'Wrong answer.';
-      turn.addLog(`${statusText} Score delta: ${res.scoreDelta > 0 ? '+' : ''}${res.scoreDelta}`, res.correct ? 'win' : 'error');
+      const isWin = res.outcome === 'win';
+      const isCorrect = res.outcome === 'correct';
+      const statusText = isWin
+        ? (res.message || 'Victory! You completed the quest!')
+        : isCorrect
+        ? 'Correct answer!'
+        : 'Wrong answer.';
+
+      const deltaText = res.scoreDelta != null
+        ? ` Score delta: ${res.scoreDelta > 0 ? '+' : ''}${res.scoreDelta}`
+        : '';
+
+      turn.addLog(`${statusText}${deltaText}`, isWin || isCorrect ? 'win' : 'error');
     } catch (err) {
+      if (err.status === 400 && err.message?.toLowerCase().includes('not in progress')) {
+        turn.setRunOver();
+        return;
+      }
       turn.addLog(`Answer failed: ${err.message}`, 'error');
       turn.forceIdle();
     }
@@ -184,23 +212,26 @@ export function PlayPage({ playerName }) {
             <Board
               currentTile={displayTile}
               playerName={playerName}
-              revealedTiles={revealedTiles}
+              revealedTiles={serverState?.revealedTiles ?? []}
+              tileCache={tileCache}
             />
           </section>
 
           {/* Action & Interaction Area */}
           <section className="play-page__action-section" aria-label="Player Actions">
-            {turn.phase === 'win' || gameStatus === 'finished' ? (
+            {turn.phase === 'win' ? (
               <WinScreen
-                finalScore={currentScore}
-                message="You have successfully reached tile 30 and completed the Quest Board!"
+                finalScore={turn.answerResult?.finalScore ?? currentScore}
+                message={turn.answerResult?.message || "You have successfully reached tile 30 and completed the Quest Board!"}
               />
-            ) : turn.phase === 'runOver' || serverState?.runOver ? (
+            ) : turn.phase === 'runOver' ? (
               <RunOverScreen playerName={playerName} />
-            ) : turn.phase === 'question' || serverState?.promptAnswer ? (
+            ) : turn.phase === 'question' || Boolean(serverState?.pendingDifficulty) ? (
               <QuestionPanel
+                difficulty={turn.moveResult?.effect?.difficulty || serverState?.pendingDifficulty || 'easy'}
+                tileNumber={turn.moveResult?.effect?.tileNumber || serverState?.pendingTile || displayTile}
+                isSubmitting={answerMutation.isPending}
                 onAnswer={handleAnswer}
-                disabled={answerMutation.isPending}
               />
             ) : turn.phase === 'result' && turn.answerResult ? (
               <ResultCard
@@ -210,7 +241,11 @@ export function PlayPage({ playerName }) {
             ) : turn.phase === 'effect' && turn.moveResult?.effect ? (
               <EffectCard
                 effect={turn.moveResult.effect}
-                onDismiss={() => turn.onEffectDone(turn.moveResult)}
+                onDismiss={() => {
+                  setScoreDelta(null);
+                  turn.onEffectDone(turn.moveResult);
+                  playerQuery.refetch();
+                }}
               />
             ) : (
               <div className="play-page__roll-box">
@@ -236,7 +271,7 @@ export function PlayPage({ playerName }) {
                   </button>
 
                   <p className="play-page__roll-hint">
-                    Press Space or click to roll the d6.
+                    Click to roll the d6.
                   </p>
                 </div>
               </div>

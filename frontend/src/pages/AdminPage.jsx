@@ -166,9 +166,9 @@ export function AdminPage() {
               <div className="admin-board-wrapper">
                 <Board
                   currentTile={1}
-                  playerName="Admin"
-                  revealedTiles={{}}
-                  allPlayers={players}
+                  revealedTiles={[]}
+                  boardLayout={data?.boardLayout}
+                  adminPlayers={players}
                   isAdmin={true}
                 />
               </div>

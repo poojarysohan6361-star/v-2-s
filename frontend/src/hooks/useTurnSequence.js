@@ -5,7 +5,7 @@
  * idle → rolling → moving → effect → question → answering → result → idle
  * Also supports: runOver, win
  */
-import { useState, useCallback, useRef } from 'react';
+import { useState, useCallback, useRef, useMemo } from 'react';
 
 /**
  * @typedef {'idle'|'rolling'|'moving'|'effect'|'question'|'answering'|'result'|'runOver'|'win'} GamePhase
@@ -104,7 +104,7 @@ export function useTurnSequence() {
 
   const isLocked = lockRef.current;
 
-  return {
+  return useMemo(() => ({
     phase,
     moveResult,
     answerResult,
@@ -122,5 +122,23 @@ export function useTurnSequence() {
     setWin,
     forceIdle,
     restoreQuestion,
-  };
+  }), [
+    phase,
+    moveResult,
+    answerResult,
+    turnLog,
+    addLog,
+    isLocked,
+    startRoll,
+    onMoveResult,
+    onMoveDone,
+    onEffectDone,
+    startAnswer,
+    onAnswerResult,
+    dismiss,
+    setRunOver,
+    setWin,
+    forceIdle,
+    restoreQuestion,
+  ]);
 }

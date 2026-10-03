@@ -75,6 +75,13 @@
   background: #e06d4a;
 }
 
+/* Small variant */
+.btn--sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--text-xs);
+  min-height: 36px;
+}
+
 /* Large variant */
 .btn--lg {
   padding: var(--space-4) var(--space-6);

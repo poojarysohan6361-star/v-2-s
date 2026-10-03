@@ -13,10 +13,26 @@ import './Board.css';
  * @param {{ tile: number, type: string }[]} [boardLayout] - Full board layout (admin only)
  * @param {{ playerName: string, currentTile: number }[]} [adminPlayers] - All players (admin only)
  */
-export function Board({ currentTile, revealedTiles, tileCache, isAdmin, boardLayout, adminPlayers }) {
+export function Board({ currentTile = 1, revealedTiles = [], tileCache = {}, isAdmin = false, boardLayout, adminPlayers }) {
   const tiles = useMemo(() => getVisualTileOrder(), []);
 
-  const revealedSet = useMemo(() => new Set(revealedTiles || []), [revealedTiles]);
+  const revealedSet = useMemo(() => {
+    if (!revealedTiles) return new Set();
+    if (revealedTiles instanceof Set) return revealedTiles;
+    if (Array.isArray(revealedTiles)) return new Set(revealedTiles);
+    if (typeof revealedTiles === 'object') {
+      return new Set(Object.keys(revealedTiles).map(Number));
+    }
+    return new Set();
+  }, [revealedTiles]);
+
+  const effectiveTileCache = useMemo(() => {
+    if (tileCache) return tileCache;
+    if (typeof revealedTiles === 'object' && !Array.isArray(revealedTiles) && !(revealedTiles instanceof Set)) {
+      return revealedTiles;
+    }
+    return {};
+  }, [tileCache, revealedTiles]);
 
   const adminTypeMap = useMemo(() => {
     if (!boardLayout) return {};
@@ -32,7 +48,7 @@ export function Board({ currentTile, revealedTiles, tileCache, isAdmin, boardLay
           const isRevealed = isAdmin || revealedSet.has(tileNum);
           const tileType = isAdmin
             ? adminTypeMap[tileNum]
-            : tileCache[tileNum]?.type || null;
+            : effectiveTileCache[tileNum]?.type || null;
           const isCurrent = !isAdmin && currentTile === tileNum;
 
           return (
@@ -51,7 +67,7 @@ export function Board({ currentTile, revealedTiles, tileCache, isAdmin, boardLay
           adminPlayers
             .filter(p => p.status === 'in_progress')
             .map(p => (
-              <PlayerMarker key={p.runId} tile={p.currentTile} label={p.playerName} isAdmin />
+              <PlayerMarker key={p.runId || p.playerName} tile={p.currentTile} label={p.playerName} isAdmin />
             ))
         ) : (
           currentTile > 0 && <PlayerMarker tile={currentTile} label="You" />
