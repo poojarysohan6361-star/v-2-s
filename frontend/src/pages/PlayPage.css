@@ -1,0 +1,109 @@
+.play-page {
+  padding: var(--space-4);
+  max-width: 1200px;
+  margin: 0 auto;
+  min-height: calc(100dvh - 64px);
+}
+
+.play-page--loading,
+.play-page--error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+}
+
+.play-page__spinner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--brass-400);
+}
+
+.play-page__spin-icon {
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.play-page__error-card {
+  background: var(--ink-900);
+  border: 1px solid var(--ember-500);
+  border-radius: var(--radius-tile);
+  padding: var(--space-6);
+  text-align: center;
+  max-width: 400px;
+  box-shadow: var(--shadow-stamp);
+}
+
+.play-page__error-icon {
+  color: var(--ember-400);
+  margin-bottom: var(--space-3);
+}
+
+.play-page__container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.play-page__main-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 900px) {
+  .play-page__main-layout {
+    grid-template-columns: 1.3fr 1fr;
+    align-items: start;
+  }
+}
+
+.play-page__board-section {
+  width: 100%;
+}
+
+.play-page__action-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.play-page__roll-box {
+  background: var(--ink-900);
+  border: var(--border-default);
+  border-radius: var(--radius-tile);
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-4);
+  box-shadow: var(--shadow-stamp);
+}
+
+.play-page__dice-container {
+  padding: var(--space-2);
+}
+
+.play-page__roll-controls {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.play-page__roll-btn {
+  font-size: var(--text-lg);
+  font-weight: 700;
+}
+
+.play-page__roll-hint {
+  font-size: var(--text-xs);
+  color: var(--parchment-300);
+}

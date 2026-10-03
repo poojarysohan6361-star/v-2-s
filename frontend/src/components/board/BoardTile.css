@@ -1,0 +1,84 @@
+.board-tile {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1px;
+  border-radius: var(--radius-tile);
+  border: 1px solid var(--ink-700);
+  background: var(--ink-900);
+  overflow: hidden;
+  min-height: 0;
+  transition: border-color var(--duration-fast);
+}
+
+.board-tile--revealed {
+  border-color: var(--parchment-300);
+  background: var(--ink-800);
+}
+
+.board-tile--current {
+  border-color: var(--brass-400);
+  border-width: 2px;
+  box-shadow: 0 0 8px rgba(217, 164, 65, 0.3);
+}
+
+/* Tile type accents */
+.board-tile--treasure .board-tile__icon { color: var(--brass-400); }
+.board-tile--question .board-tile__icon { color: var(--teal-400); }
+.board-tile--encounter .board-tile__icon { color: var(--ember-500); }
+.board-tile--portal .board-tile__icon { color: var(--violet-400); }
+.board-tile--checkpoint .board-tile__icon { color: var(--moss-400); }
+.board-tile--final_checkpoint .board-tile__icon { color: var(--brass-400); }
+.board-tile--start .board-tile__icon { color: var(--moss-400); }
+
+.board-tile__number {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--parchment-300);
+  opacity: 0.7;
+  line-height: 1;
+}
+
+.board-tile__icon {
+  flex-shrink: 0;
+}
+
+.board-tile__label {
+  font-size: 8px;
+  color: var(--parchment-300);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  text-align: center;
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .board-tile__label {
+    display: block;
+  }
+  .board-tile__number {
+    font-size: var(--text-xs);
+  }
+}
+
+/* Fog pattern for unrevealed tiles */
+.board-tile__fog {
+  position: absolute;
+  inset: 0;
+  background-image:
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 3px,
+      rgba(203, 191, 165, 0.06) 3px,
+      rgba(203, 191, 165, 0.06) 4px
+    );
+  pointer-events: none;
+}
+
+.board-tile--hidden {
+  opacity: 0.6;
+}

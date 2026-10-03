@@ -1,0 +1,29 @@
+.connection-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: var(--radius-chip);
+  font-size: var(--text-xs);
+  font-family: var(--font-mono);
+  border: var(--border-default);
+}
+
+.connection-badge--ok {
+  color: var(--moss-400);
+}
+
+.connection-badge--err {
+  color: var(--ember-500);
+  border-color: var(--ember-500);
+}
+
+.connection-badge__text {
+  display: none;
+}
+
+@media (min-width: 640px) {
+  .connection-badge__text {
+    display: inline;
+  }
+}

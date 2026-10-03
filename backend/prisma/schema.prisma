@@ -1,0 +1,68 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum RunStatus {
+  in_progress
+  completed
+  force_ended
+}
+
+model Player {
+  id        String   @id @default(uuid())
+  name      String   @unique
+  createdAt DateTime @default(now())
+
+  runs Run[]
+}
+
+model Run {
+  id           String    @id @default(uuid())
+  playerId     String
+  player       Player    @relation(fields: [playerId], references: [id])
+  currentTile  Int       @default(1)
+  score        Int       @default(0)
+  status       RunStatus @default(in_progress)
+  startedAt    DateTime  @default(now())
+  lastMoveAt   DateTime  @default(now())
+  completedAt  DateTime?
+
+  pendingDifficulty String?
+  pendingTile       Int?
+
+  revealedTiles RevealedTile[]
+  questionLogs  QuestionLog[]
+
+  @@index([playerId])
+  @@index([status])
+}
+
+model RevealedTile {
+  id         String   @id @default(uuid())
+  runId      String
+  run        Run      @relation(fields: [runId], references: [id])
+  tileNumber Int
+  revealedAt DateTime @default(now())
+
+  @@unique([runId, tileNumber])
+  @@index([runId])
+}
+
+model QuestionLog {
+  id         String   @id @default(uuid())
+  runId      String
+  run        Run      @relation(fields: [runId], references: [id])
+  tileNumber Int
+  difficulty String
+  answer     String
+  correct    Boolean
+  scoreDelta Int
+  createdAt  DateTime @default(now())
+
+  @@index([runId])
+}

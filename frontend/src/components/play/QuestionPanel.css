@@ -1,0 +1,119 @@
+.question-panel {
+  background: var(--ink-900);
+  border: 1px solid var(--brass-600);
+  border-radius: var(--radius-tile);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-stamp);
+}
+
+.question-panel__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.question-panel__icon { color: var(--brass-400); }
+
+.question-panel__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  color: var(--parchment-100);
+  flex: 1;
+}
+
+.question-panel__tile {
+  font-size: var(--text-xs);
+  color: var(--parchment-300);
+}
+
+.question-panel__stakes {
+  display: flex;
+  gap: var(--space-4);
+  margin-bottom: var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--ink-800);
+  border-radius: var(--radius-chip);
+}
+
+.question-panel__stake {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
+  font-family: var(--font-mono);
+  font-size: var(--text-sm);
+}
+
+.question-panel__stake--pos { color: var(--moss-400); }
+.question-panel__stake--neg { color: var(--ember-500); }
+
+.question-panel__note {
+  font-size: var(--text-xs);
+  color: var(--ember-500);
+  margin-bottom: var(--space-3);
+  font-style: italic;
+}
+
+.question-panel__host {
+  margin-bottom: var(--space-4);
+}
+
+.question-panel__host-msg {
+  color: var(--parchment-300);
+  font-style: italic;
+  font-size: var(--text-sm);
+  text-align: center;
+  padding: var(--space-3);
+  border: 1px dashed var(--ink-700);
+  border-radius: var(--radius-tile);
+}
+
+.question-panel__question-text {
+  color: var(--parchment-100);
+  font-size: var(--text-base);
+}
+
+.question-panel__options {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.question-panel__actions {
+  display: flex;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.question-panel__actions .btn {
+  flex: 1;
+  min-width: 100px;
+}
+
+.question-panel__confirm-hint {
+  font-size: var(--text-xs);
+  color: var(--brass-400);
+  text-align: center;
+  margin-top: var(--space-2);
+}
+
+@media (max-width: 639px) {
+  .question-panel {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    max-height: 70vh;
+    overflow-y: auto;
+    border-radius: var(--radius-tile) var(--radius-tile) 0 0;
+    border-bottom: none;
+    animation: slide-up 0.25s var(--ease-out);
+  }
+
+  @keyframes slide-up {
+    from { transform: translateY(100%); }
+    to   { transform: translateY(0); }
+  }
+}

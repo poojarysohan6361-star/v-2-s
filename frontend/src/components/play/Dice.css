@@ -1,0 +1,46 @@
+.dice {
+  width: 64px;
+  height: 64px;
+  background: var(--parchment-100);
+  border-radius: 8px;
+  box-shadow: var(--shadow-stamp);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.dice--rolling {
+  animation: dice-tumble 0.12s ease-in-out infinite alternate;
+}
+
+@keyframes dice-tumble {
+  from { transform: rotate(-6deg) scale(1.02); }
+  to   { transform: rotate(6deg) scale(0.98); }
+}
+
+.dice__face {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  grid-template-areas:
+    "tl . tr"
+    "ml cc mr"
+    "bl . br";
+  grid-template-columns: 1fr 1fr 1fr;
+  grid-template-rows: 1fr 1fr 1fr;
+  place-items: center;
+}
+
+.dice__dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: var(--ink-950);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dice--rolling {
+    animation: none;
+  }
+}

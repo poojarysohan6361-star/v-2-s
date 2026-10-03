@@ -1,0 +1,15 @@
+.board {
+  width: 100%;
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.board__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  grid-template-rows: repeat(5, 1fr);
+  gap: 3px;
+  aspect-ratio: 6 / 5;
+  position: relative;
+  padding: var(--space-1);
+}

@@ -1,0 +1,52 @@
+.effect-card {
+  background: var(--ink-900);
+  border: var(--border-default);
+  border-radius: var(--radius-tile);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-stamp);
+}
+
+.effect-card__header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin-bottom: var(--space-3);
+}
+
+.effect-card__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-base);
+  color: var(--parchment-100);
+  flex: 1;
+}
+
+.effect-card__tile {
+  font-size: var(--text-xs);
+  color: var(--parchment-300);
+}
+
+.effect-card__body {
+  margin-bottom: var(--space-3);
+}
+
+.effect-card__text {
+  color: var(--parchment-100);
+  font-size: var(--text-sm);
+}
+
+.effect-card__delta {
+  font-weight: 600;
+}
+
+.effect-card__delta--pos { color: var(--moss-400); }
+.effect-card__delta--neg { color: var(--ember-500); }
+
+.effect-card__dismiss {
+  width: 100%;
+}
+
+/* Type-specific header icon colors */
+.effect-card--treasure .effect-card__header svg { color: var(--brass-400); }
+.effect-card--portal .effect-card__header svg { color: var(--violet-400); }
+.effect-card--encounter .effect-card__header svg { color: var(--ember-500); }
+.effect-card--checkpoint .effect-card__header svg { color: var(--moss-400); }

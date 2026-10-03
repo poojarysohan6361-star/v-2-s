@@ -1,0 +1,72 @@
+/* ============================================================
+   Quest Board — Design Tokens
+   Expedition Map at Night theme
+   ============================================================ */
+
+:root {
+  /* ── Surfaces ── */
+  --ink-950: #0E1116;
+  --ink-900: #151A22;
+  --ink-800: #1E2530;
+  --ink-700: #2A3340;
+
+  /* ── Text ── */
+  --parchment-100: #F2E9D8;
+  --parchment-300: #CBBFA5;
+
+  /* ── Accent ── */
+  --brass-400: #D9A441;
+  --brass-600: #A8741A;
+
+  /* ── Semantic ── */
+  --moss-400: #6FAE7B;
+  --ember-500: #D8613C;
+  --teal-400: #4FB3BF;
+  --violet-400: #9B7FD1;
+
+  /* ── Typography ── */
+  --font-heading: 'Fraunces', serif;
+  --font-body: 'IBM Plex Sans', sans-serif;
+  --font-mono: 'IBM Plex Mono', monospace;
+
+  /* ── Type Scale ── */
+  --text-xs: 0.75rem;   /* 12px */
+  --text-sm: 0.875rem;  /* 14px */
+  --text-base: 1rem;    /* 16px */
+  --text-lg: 1.25rem;   /* 20px */
+  --text-xl: 1.75rem;   /* 28px */
+  --text-2xl: 2.5rem;   /* 40px */
+
+  /* ── Line Heights ── */
+  --leading-body: 1.5;
+  --leading-heading: 1.15;
+
+  /* ── Spacing (4px system) ── */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-12: 48px;
+
+  /* ── Radii ── */
+  --radius-chip: 2px;
+  --radius-tile: 4px;
+  --radius-btn: 6px;
+
+  /* ── Shadows ── */
+  --shadow-stamp: 4px 4px 0 rgba(0, 0, 0, 0.45);
+  --shadow-none: 0 0 0 transparent;
+
+  /* ── Borders ── */
+  --border-default: 1px solid var(--ink-700);
+
+  /* ── Focus ── */
+  --focus-ring: 2px solid var(--brass-400);
+
+  /* ── Transitions ── */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --duration-fast: 150ms;
+  --duration-normal: 250ms;
+}

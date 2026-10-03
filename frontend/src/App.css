@@ -1,0 +1,28 @@
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  background-color: var(--ink-950);
+  color: var(--parchment-100);
+}
+
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 1rem;
+  background: var(--brass-400);
+  color: var(--ink-950);
+  padding: 0.5rem 1rem;
+  font-weight: 700;
+  z-index: 9999;
+  border-radius: 4px;
+  transition: top 0.2s ease-out;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+.app__content {
+  flex: 1;
+}

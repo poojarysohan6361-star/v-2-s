@@ -1,0 +1,26 @@
+.run-over {
+  text-align: center;
+  padding: var(--space-8) var(--space-4);
+}
+
+.run-over__icon {
+  color: var(--parchment-300);
+  margin-bottom: var(--space-4);
+}
+
+.run-over__title {
+  font-family: var(--font-heading);
+  font-size: var(--text-xl);
+  color: var(--parchment-100);
+  margin-bottom: var(--space-3);
+}
+
+.run-over__text {
+  color: var(--parchment-300);
+  margin-bottom: var(--space-6);
+}
+
+.run-over__link {
+  display: inline-flex;
+  text-decoration: none;
+}

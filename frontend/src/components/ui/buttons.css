@@ -1,0 +1,88 @@
+/* ============================================================
+   Quest Board — UI Primitives (Buttons)
+   ============================================================ */
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-4);
+  min-height: 44px;
+  font-family: var(--font-body);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  border-radius: var(--radius-btn);
+  border: none;
+  cursor: pointer;
+  transition:
+    transform var(--duration-fast) var(--ease-out),
+    box-shadow var(--duration-fast) var(--ease-out);
+  box-shadow: var(--shadow-stamp);
+  text-decoration: none;
+  line-height: 1;
+}
+
+.btn:hover:not(:disabled) {
+  transform: translate(-1px, -1px);
+}
+
+.btn:active:not(:disabled) {
+  transform: translate(2px, 2px);
+  box-shadow: var(--shadow-none);
+}
+
+.btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  box-shadow: var(--shadow-none);
+}
+
+/* Primary: brass bg, dark text */
+.btn--primary {
+  background: var(--brass-400);
+  color: var(--ink-950);
+}
+
+.btn--primary:hover:not(:disabled) {
+  background: #e0ad4f;
+}
+
+/* Secondary: outline parchment */
+.btn--secondary {
+  background: transparent;
+  color: var(--parchment-100);
+  border: 1px solid var(--parchment-300);
+  box-shadow: none;
+}
+
+.btn--secondary:hover:not(:disabled) {
+  background: var(--ink-800);
+  border-color: var(--parchment-100);
+}
+
+.btn--secondary:active:not(:disabled) {
+  box-shadow: none;
+}
+
+/* Danger: ember */
+.btn--danger {
+  background: var(--ember-500);
+  color: var(--parchment-100);
+}
+
+.btn--danger:hover:not(:disabled) {
+  background: #e06d4a;
+}
+
+/* Large variant */
+.btn--lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--text-base);
+  min-height: 48px;
+}
+
+/* Full width */
+.btn--full {
+  width: 100%;
+}

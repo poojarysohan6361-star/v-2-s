@@ -1,0 +1,39 @@
+.player-marker {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 10;
+  pointer-events: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: left 0.3s var(--ease-out), top 0.3s var(--ease-out);
+}
+
+.player-marker__pin {
+  filter: drop-shadow(2px 2px 0 rgba(0, 0, 0, 0.45));
+}
+
+.player-marker--admin .player-marker__pin {
+  width: 14px;
+  height: 18px;
+}
+
+.player-marker__label {
+  font-size: 8px;
+  font-family: var(--font-mono);
+  color: var(--parchment-100);
+  background: var(--ink-950);
+  padding: 0 3px;
+  border-radius: var(--radius-chip);
+  white-space: nowrap;
+  max-width: 60px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-top: 1px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .player-marker {
+    transition: none;
+  }
+}
