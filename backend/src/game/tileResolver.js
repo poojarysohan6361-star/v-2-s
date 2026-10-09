@@ -18,6 +18,11 @@ function computeNewPosition(currentTile, roll) {
 
 function resolveTileEffect(tileNumber, revealedTiles) {
   const tileType = TILE_TYPES.find((t) => t.tile === tileNumber)?.type || "question";
+
+  if (tileType === "final_checkpoint") {
+    return { type: "final_checkpoint", tileNumber, difficulty: "final", needsReroll: false };
+  }
+
   const alreadyRevealed = revealedTiles.includes(tileNumber);
 
   if (alreadyRevealed) {
@@ -29,8 +34,6 @@ function resolveTileEffect(tileNumber, revealedTiles) {
       return { type: "start", tileNumber, needsReroll: true };
     case "checkpoint":
       return { type: "checkpoint", tileNumber, needsReroll: false };
-    case "final_checkpoint":
-      return { type: "final_checkpoint", tileNumber, difficulty: "final" };
     case "encounter":
       return resolveEncounterEffect(tileNumber);
     case "treasure":

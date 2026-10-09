@@ -61,15 +61,17 @@ async function executeMove(playerName) {
     attempts++;
   }
 
-  if (attempts >= MAX_ATTEMPTS) {
-    return { error: "Unable to resolve tile after many attempts" };
+  if (needsReroll) {
+    // If every attempt landed on an already-revealed tile, accept the move without rerolling
+    effect = { type: "already_revealed", tileNumber: newPosition, needsReroll: false };
   }
 
-  await prisma.revealedTile.create({
-    data: { runId: run.id, tileNumber: newPosition },
-  });
-
-  revealedTiles.push(newPosition);
+  if (!revealedTiles.includes(newPosition)) {
+    await prisma.revealedTile.create({
+      data: { runId: run.id, tileNumber: newPosition },
+    });
+    revealedTiles.push(newPosition);
+  }
 
   await prisma.run.update({
     where: { id: run.id },

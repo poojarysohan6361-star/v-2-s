@@ -50,13 +50,24 @@ async function handleMove(req, res, next) {
       });
     }
 
-    if (result.effect.type === "encounter" && result.effect.scoreDelta !== 0) {
+    if (result.effect.type === "encounter") {
       const prisma = getPrisma();
-      const updated = await prisma.run.update({
-        where: { id: result.runId },
-        data: { score: { increment: result.effect.scoreDelta } },
-      });
-      result.currentScore = updated.score;
+      const updateData = {};
+      if (result.effect.scoreDelta !== 0) {
+        updateData.score = { increment: result.effect.scoreDelta };
+      }
+      if (result.effect.moveDelta) {
+        const newPos = clampPosition(result.newPosition + result.effect.moveDelta);
+        updateData.currentTile = newPos;
+        result.newPosition = newPos;
+      }
+      if (Object.keys(updateData).length > 0) {
+        const updated = await prisma.run.update({
+          where: { id: result.runId },
+          data: updateData,
+        });
+        result.currentScore = updated.score;
+      }
     }
 
     if (result.effect.type === "treasure") {
